@@ -25,3 +25,31 @@ function updateDepth(book, newPage) {
 		$('.flipbook .pPenultimo .depth').css({width: 0});
 
 }
+
+function loadPage(page) {
+
+	$.ajax({url: 'pages/page' + page + '.html'}).
+		done(function(pageHtml) {
+			$('.flipbook .p' + page).html(pageHtml.replace('', ''));
+		});
+
+}
+
+function addPage(page, book) {
+
+	var id, pages = book.turn('pages');
+
+	if (!book.turn('hasPage', page)) {
+
+		var element = $('<div />',
+			{'class': 'own-size',
+				css: {width: 460, height: 582}
+			}).
+			html('<div class="loader"></div>');
+
+		if (book.turn('addPage', element, page)) {
+			loadPage(page);
+		}
+
+	}
+}
